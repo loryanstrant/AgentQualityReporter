@@ -1,0 +1,53 @@
+# Quality scan configuration
+# Rule severities: blocker (10), major (5), minor (2), info (0)
+# Score is computed as: 100 - (sum of failed-rule severities) clamped to [0, 100]
+#
+# Rule metadata (id, name, severity, P&P reference) now lives in
+# rules/rule-catalogue.md so business reviewers can edit it without touching
+# YAML. The scanner loads the catalogue at runtime.
+
+solution:
+  # Relative path from the repo root to the unpacked solution folder.
+  unpacked_path: "PPsolution/CCSInboxAutomation"
+  # Where to write the scorecard (markdown + HTML + JSON; timestamped filenames).
+  report_folder: "PPsolution/_quality-reports/CCSInboxAutomation"
+
+icon:
+  # SHA-256 hashes of the default Copilot Studio agent icon (the iconbase64
+  # string that ships with every new agent). When the scanner sees one of
+  # these hashes it flags AGT-009 as the default icon. Populate as new
+  # defaults are observed in the wild — entries are case-insensitive.
+  known_default_hashes: []
+
+model:
+  # Catalogue of Copilot Studio models, keyed by the `modelNameHint` value
+  # that appears in botcomponents/<bot>.gpt.default/data under
+  # aiSettings.model.modelNameHint. Source:
+  #   https://learn.microsoft.com/en-us/microsoft-copilot-studio/authoring-select-agent-model
+  # Statuses: default | ga | preview | experimental | retired.
+  # Update this list when Microsoft promotes/retires models in the docs.
+  catalogue:
+    GPT4o:                  { display: "GPT-4o",                       status: retired,      category: General }
+    GPT41:                  { display: "GPT-4.1",                      status: default,      category: General }
+    GPT5Chat:               { display: "GPT-5 Chat",                   status: ga,           category: General }
+    GPT5Reasoning:          { display: "GPT-5 Reasoning",              status: preview,      category: Deep }
+    GPT5Auto:               { display: "GPT-5 Auto",                   status: preview,      category: Auto }
+    GPT53Chat:              { display: "GPT-5.3 Chat",                 status: experimental, category: General }
+    GPT54Reasoning:         { display: "GPT-5.4 Reasoning",            status: experimental, category: Deep }
+    GPT55Reasoning:         { display: "GPT-5.5 Reasoning",            status: experimental, category: Deep }
+    ClaudeSonnet45:         { display: "Claude Sonnet 4.5",            status: ga,           category: General }
+    ClaudeSonnet46:         { display: "Claude Sonnet 4.6",            status: ga,           category: General }
+    ClaudeOpus46:           { display: "Claude Opus 4.6",              status: ga,           category: Deep }
+    ClaudeOpus47:           { display: "Claude Opus 4.7",              status: experimental, category: Deep }
+    Grok41FastNonReasoning: { display: "Grok 4.1 Fast (Non-Reasoning)", status: experimental, category: General }
+
+llm_judge:
+  # If endpoint/key/deployment env vars are missing, the judge step is skipped
+  # gracefully and only static checks contribute to the scorecard.
+  enabled: true
+  # Severity weighting for judge-derived findings.
+  weight_clarity: 5
+  weight_scope_discipline: 5
+  weight_persona: 2
+  weight_orchestrator_pattern: 5
+  weight_child_pattern: 5

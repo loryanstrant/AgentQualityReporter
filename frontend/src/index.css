@@ -1,0 +1,103 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --mist: #f5f7fa;
+  --surface: #ffffff;
+  --ink: #333333;
+  --slate: #666666;
+  --hairline: #cccccc;
+  --track: #e2e7ee;
+  --line: rgba(51, 51, 51, 0.1);
+  --strong: #333333;
+  --pass: #2a9d8f;
+  --fail: #e63946;
+}
+
+.dark {
+  --mist: #10151c;
+  --surface: #1c2431;
+  --ink: #f1f4f8;
+  --slate: #aab4c0;
+  --hairline: #3a434f;
+  --track: #333d4a;
+  --line: rgba(255, 255, 255, 0.1);
+  --strong: #2c3540;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  background: var(--mist);
+  color: var(--ink);
+  -webkit-font-smoothing: antialiased;
+}
+
+.card {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 0.75rem;
+  box-shadow: 0 2px 6px rgba(15, 20, 26, 0.06);
+}
+
+/* Theme-aware form controls: on dark mode the default white inputs make their
+   text unreadable, so bind bg/text/border to the theme surface. */
+input,
+select,
+textarea {
+  background-color: var(--surface);
+  color: var(--ink);
+  border-color: var(--hairline);
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: var(--slate);
+  opacity: 0.7;
+}
+
+.pill {
+  @apply inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-semibold;
+}
+
+/* Secondary action button — theme-aware outline style used for deep links. */
+.btn-secondary {
+  @apply inline-flex items-center gap-1 px-3 py-1.5 rounded-lg font-medium transition-colors;
+  background: var(--surface);
+  color: var(--ink);
+  border: 1px solid var(--hairline);
+}
+.btn-secondary:hover {
+  background: var(--mist);
+  border-color: var(--slate);
+}
+
+/* Semantic badges — legible in both themes (light tint + readable text on light,
+   deeper tint + bright text on dark). Used for finding status/severity and the
+   judge pattern flags. */
+.badge {
+  @apply inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-semibold border;
+}
+.badge-pass    { background: rgba(42,157,143,.14);  color: #1c6b61; border-color: rgba(42,157,143,.35); }
+.badge-fail    { background: rgba(230,57,70,.14);   color: #a5222c; border-color: rgba(230,57,70,.35); }
+.badge-skip    { background: rgba(141,153,174,.18); color: #4c5566; border-color: rgba(141,153,174,.4); }
+.badge-blocker { background: rgba(230,57,70,.14);   color: #a5222c; border-color: rgba(230,57,70,.35); }
+.badge-major   { background: rgba(244,162,97,.18);  color: #9a5a1e; border-color: rgba(244,162,97,.4); }
+.badge-minor   { background: rgba(233,196,106,.22); color: #8a6d1f; border-color: rgba(233,196,106,.5); }
+.badge-info    { background: rgba(138,176,171,.22); color: #3f5e59; border-color: rgba(138,176,171,.5); }
+.badge-off     { background: var(--track); color: var(--slate); border-color: var(--hairline); }
+
+.dark .badge-pass    { background: rgba(42,157,143,.22);  color: #6ee0d0; border-color: rgba(110,224,208,.45); }
+.dark .badge-fail    { background: rgba(230,57,70,.24);   color: #ff8a92; border-color: rgba(255,138,146,.45); }
+.dark .badge-skip    { background: rgba(141,153,174,.26); color: #c3ccd8; border-color: rgba(195,204,216,.4); }
+.dark .badge-blocker { background: rgba(230,57,70,.24);   color: #ff8a92; border-color: rgba(255,138,146,.45); }
+.dark .badge-major   { background: rgba(244,162,97,.26);  color: #ffbe86; border-color: rgba(255,190,134,.45); }
+.dark .badge-minor   { background: rgba(233,196,106,.26); color: #f2d98a; border-color: rgba(242,217,138,.45); }
+.dark .badge-info    { background: rgba(138,176,171,.28); color: #b6d4cf; border-color: rgba(182,212,207,.45); }
+.dark .badge-off     { background: var(--track); color: var(--ink); border-color: var(--hairline); }

@@ -1,0 +1,22 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+.pytest_cache/
+.mypy_cache/
+
+# Env / secrets
+.env
+azure-credentials.local.txt
+
+# Node / frontend
+node_modules/
+frontend/dist/
+
+# Azure
+.azure/
+
+# OS
+.DS_Store
+Thumbs.db
