@@ -92,6 +92,12 @@ docker compose up --build
 - **API health check:** http://localhost:8000/health
 - **Postgres:** localhost:5432 (user/pass/db all `agentquality` by default)
 
+> **Custom ports:** if 5432 / 8000 / 5173 clash with another stack, set `DB_PORT`,
+> `API_PORT`, and/or `FRONTEND_PORT` in `.env` before `docker compose up`. Only the
+> host-side ports change; the container-internal ports (and the deployed Azure app)
+> are unaffected. For example `FRONTEND_PORT=5273` serves the dashboard at
+> http://localhost:5273.
+
 On first start an admin login is seeded from `ADMIN_USERNAME` / `ADMIN_PASSWORD`
 in `.env` (defaults `admin` / `change-me` — change these). Sign in, open **Admin**,
 add an environment (its Dataverse URL), enter your service-principal credentials,

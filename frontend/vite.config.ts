@@ -5,12 +5,13 @@ import react from "@vitejs/plugin-react";
 // http://localhost:8000. The dev server proxies API paths so the browser only
 // ever talks to a single origin (no CORS needed).
 const target = process.env.VITE_PROXY_TARGET || "http://localhost:8000";
+const port = Number(process.env.FRONTEND_PORT) || 5173;
 
 export default defineConfig({
   plugins: [react()],
   server: {
     host: true,
-    port: 5173,
+    port,
     watch: { usePolling: true, interval: 300 },
     proxy: {
       "/auth": target,
