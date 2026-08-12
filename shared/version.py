@@ -10,8 +10,8 @@ from __future__ import annotations
 
 import os
 
-APP_VERSION = "0.6.0"
+APP_VERSION = "0.7.0"
 
 # Release/build date (YYYY-MM-DD) and clock time (HH:MM, local build tz).
-BUILD_DATE = os.environ.get("BUILD_DATE", "2026-08-05")
-BUILD_TIME = os.environ.get("BUILD_TIME", "12:40 AEST")
+BUILD_DATE = os.environ.get("BUILD_DATE", "2026-08-12")
+BUILD_TIME = os.environ.get("BUILD_TIME", "21:15 AEST")

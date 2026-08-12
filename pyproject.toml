@@ -1,6 +1,6 @@
 [project]
 name = "agent-quality-platform"
-version = "0.6.0"
+version = "0.7.0"
 description = "Self-contained, containerised Copilot Studio Agent Quality Platform (live API ingest -> Postgres -> web dashboard)"
 readme = "README.md"
 requires-python = ">=3.12"
@@ -16,7 +16,7 @@ dependencies = [
     "pydantic-settings>=2.3",
     "psycopg[binary]>=3.2",
     "cryptography>=42",
-    "python-jose[cryptography]>=3.3",
+    "pyjwt>=2.9",
     "bcrypt>=4.1",
     "python-multipart>=0.0.9",
     "pyyaml>=6.0",
