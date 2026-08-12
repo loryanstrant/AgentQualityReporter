@@ -12,6 +12,7 @@ export default function Layout({ children }: { children: ReactNode }) {
   const nav = [
     { to: "/", label: "Overview" },
     { to: "/history", label: "History" },
+    { to: "/about", label: "About" },
     ...(user?.role === "admin" ? [{ to: "/settings", label: "Admin" }] : []),
   ];
 

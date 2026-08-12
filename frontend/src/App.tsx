@@ -7,6 +7,7 @@ import AgentDetailPage from "./pages/AgentDetailPage";
 import HistoryPage from "./pages/HistoryPage";
 import AdminPage from "./pages/AdminPage";
 import RulesPage from "./pages/RulesPage";
+import AboutPage from "./pages/AboutPage";
 
 export default function App() {
   const { user, loading } = useAuth();
@@ -33,6 +34,7 @@ export default function App() {
         <Route path="/" element={<OverviewPage />} />
         <Route path="/agents/:botId" element={<AgentDetailPage />} />
         <Route path="/history" element={<HistoryPage />} />
+        <Route path="/about" element={<AboutPage />} />
         <Route
           path="/settings"
           element={user.role === "admin" ? <AdminPage /> : <Navigate to="/" replace />}

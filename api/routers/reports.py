@@ -43,6 +43,21 @@ async def _latest_scan_per_env(session: AsyncSession) -> dict[int | None, Scan]:
     return latest
 
 
+@router.get("/about")
+async def about() -> dict:
+    """App version metadata for the About page (any authenticated user)."""
+    from engine.loader import ENGINE_VERSION, catalogue_hash
+    from shared.version import APP_VERSION, BUILD_DATE, BUILD_TIME
+
+    return {
+        "version": APP_VERSION,
+        "engine_version": ENGINE_VERSION,
+        "catalogue_hash": catalogue_hash(),
+        "build_date": BUILD_DATE,
+        "build_time": BUILD_TIME,
+    }
+
+
 @router.get("/environments")
 async def environments(session: AsyncSession = Depends(get_session)) -> list[dict]:
     """One card per environment that has been scanned, with a rollup + latest scan."""

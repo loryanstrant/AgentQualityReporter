@@ -23,13 +23,13 @@
         "type": "Microsoft.Common.TextBox",
         "label": "Resource name prefix",
         "defaultValue": "agentqa",
-        "toolTip": "Short prefix (letters and numbers) used to name every resource.",
+        "toolTip": "Short prefix (lowercase, starts with a letter) used to name every resource. Kept short so generated names stay within Azure's length limits.",
         "constraints": {
           "required": true,
           "validations": [
             {
-              "regex": "^[a-z0-9]{2,12}$",
-              "message": "2-12 lowercase letters or numbers."
+              "regex": "^[a-z][a-z0-9]{1,11}$",
+              "message": "2-12 characters, lowercase, starting with a letter (letters and numbers only)."
             }
           ]
         }

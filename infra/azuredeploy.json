@@ -11,7 +11,7 @@
       "minLength": 2,
       "maxLength": 12,
       "metadata": {
-        "description": "Short prefix used to name every resource (letters/numbers only)."
+        "description": "Short prefix used to name every resource. Lowercase, starts with a letter, 2-12 characters (letters/numbers)."
       }
     },
     "location": {
@@ -100,14 +100,15 @@
     }
   },
   "variables": {
-    "resourceToken": "[toLower(uniqueString(resourceGroup().id, parameters('namePrefix')))]",
-    "logsName": "[format('{0}-log-{1}', parameters('namePrefix'), variables('resourceToken'))]",
-    "envName": "[format('{0}-cae-{1}', parameters('namePrefix'), variables('resourceToken'))]",
-    "pgServerName": "[format('{0}-psql-{1}', parameters('namePrefix'), variables('resourceToken'))]",
+    "prefix": "[toLower(parameters('namePrefix'))]",
+    "resourceToken": "[take(toLower(uniqueString(resourceGroup().id, parameters('namePrefix'))), 8)]",
+    "logsName": "[format('{0}-log-{1}', variables('prefix'), variables('resourceToken'))]",
+    "envName": "[format('{0}-cae-{1}', variables('prefix'), variables('resourceToken'))]",
+    "pgServerName": "[format('{0}-psql-{1}', variables('prefix'), variables('resourceToken'))]",
     "pgAdminLogin": "aqadmin",
     "pgDatabaseName": "agentquality",
-    "apiAppName": "[format('{0}-api-{1}', parameters('namePrefix'), variables('resourceToken'))]",
-    "workerAppName": "[format('{0}-worker-{1}', parameters('namePrefix'), variables('resourceToken'))]",
+    "apiAppName": "[format('{0}-api-{1}', variables('prefix'), variables('resourceToken'))]",
+    "workerAppName": "[format('{0}-worker-{1}', variables('prefix'), variables('resourceToken'))]",
     "apiImage": "[format('{0}/api:{1}', parameters('imageRegistry'), parameters('imageTag'))]",
     "workerImage": "[format('{0}/worker:{1}', parameters('imageRegistry'), parameters('imageTag'))]",
     "databaseUrl": "[format('postgresql+psycopg://{0}:{1}@{2}.postgres.database.azure.com:5432/{3}?sslmode=require', variables('pgAdminLogin'), parameters('postgresAdminPassword'), variables('pgServerName'), variables('pgDatabaseName'))]",

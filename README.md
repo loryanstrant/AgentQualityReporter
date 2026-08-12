@@ -15,6 +15,73 @@ The button provisions everything into a resource group of your choice: a Postgre
 > (`agentqualityreporter/api` and `.../worker`) to **Public** once, so Container Apps can pull
 > them anonymously. See [`docs/deploy.md`](docs/deploy.md) for the full walkthrough.
 
+## After it's deployed
+
+**1. Open the dashboard.** In the portal, go to your resource group → open the deployment (or
+Deployments → the `Microsoft.Template` run) → **Outputs** → copy **`dashboardUrl`**. That is your app.
+It's served by the **`…-api-…`** Container App (the `…-worker-…` one has no web UI — it just runs
+scheduled scanning in the background). You can also get the URL from the api Container App's
+**Overview → Application Url**.
+
+**2. Sign in.** Username is what you set as **admin username** (default `admin`); password is the
+**admin password** you chose at deploy time. The admin console is always password-protected.
+
+**3. Connect your Dataverse service principal.** Go to **Admin**. The setup guide walks you through
+creating one Entra **app registration** with the **Dynamics CRM `user_impersonation`** application
+permission, then registering it as an **application user** (with a role that can read bots, bot
+components, and solutions) in each environment you scan. Paste **Tenant ID**, **Client ID**, and
+**Client secret**. Optionally add an **Azure OpenAI / Foundry** base URL, model, and key to enable
+the LLM instruction-quality judge.
+
+**4. Add environments and scan.** On **Admin**, **Add environment** → paste its Dataverse org URL
+(e.g. `https://org.crm.dynamics.com`) → **Test** → **Scan now** (or **Scan all environments**). The
+environment card shows the last-scan time and agent count; the Overview page shows live scan
+progress. You can **Edit** an environment later to rename it or add Application Insights details.
+
+### Restrictions and things to know
+
+- **Application Insights (AGT-007)** can't be read by a service principal — Copilot Studio stores its
+  connection outside Dataverse and its bot-management API rejects app-only tokens. This rule is
+  therefore **manual-review** and never fails on absence. Connecting an environment's App Insights in
+  Admin lets telemetry be confirmed automatically instead.
+- **A scan that finds no agents** usually means the app registration isn't registered as an
+  **application user** in that environment, or its security role can't read `bot` rows. Re-check the
+  setup guide's step 2 and use **Test** on the environment.
+- **The service principal needs per-environment access** — one app registration, added as an
+  application user in *each* environment you want to scan.
+
+### Enabling Entra ID single sign-on (optional)
+
+By default the dashboard is protected by the single admin password. You can additionally let
+colleagues sign in with their **work account** (read-only viewer) via **Container Apps Easy Auth** —
+administration stays behind the password. You can turn this on **at deploy time or later**.
+
+**One-time prerequisite (either path):** an Entra **app registration** for sign-in (you can reuse the
+service-principal one). Note its **Application (client) ID**, create a **client secret**, and after
+deployment add the redirect URI `https://<your-dashboardUrl>/.auth/login/aad/callback` under
+**Authentication → Web**.
+
+**Option A — at deploy time (recommended):** on the **Deploy to Azure** form, open the **Entra SSO**
+tab, tick **Enable Entra ID single sign-on**, and paste the app registration **client ID**, **client
+secret**, and (optional) **tenant ID**. Everything is wired up automatically; grab the
+**`entraRedirectUriToRegister`** deployment output and add it to the app registration as above.
+
+**Option B — after deployment:** open the **`…-api-…`** Container App → **Settings → Authentication**
+→ **Add identity provider** → **Microsoft**, use your app registration's client ID + secret, and set
+*unauthenticated requests* to **Allow** (the app still gates admin behind the password; SSO users
+become viewers). Add the redirect URI as above.
+
+Full details: [`docs/deploy.md`](docs/deploy.md#entra-single-sign-on-optional).
+
+### Where to find run history, logs, and errors
+
+- **In the app:** the **Overview** page shows live scan progress; **History** shows past scans with
+  scores; each environment card on **Admin** shows its last-scan time and agent count.
+- **Container logs (the real detail):** manual **Scan now** / **Scan all** run inside the
+  **`…-api-…`** Container App — open it → **Monitoring → Log stream** (live), or **Logs** to query
+  `ContainerAppConsoleLogs_CL`. Scheduled background scans run in the **`…-worker-…`** Container App —
+  check its log stream for scheduled-run errors.
+
 ## Screenshots
 
 ### Overview — every agent, every environment
@@ -34,6 +101,12 @@ A full breakdown for one agent: score gauge, metadata (created/modified, human c
 Password-protected console: manage environments (add, **edit**, test, scan, delete), scan all environments at once, configure the Dataverse service principal and LLM judge, and open the editable rules catalogue. The version/build stamp and a guided setup wizard live here too.
 
 ![Admin](docs/screenshots/admin.png)
+
+### About
+
+App version/build, a plain-English explainer of how scoring works, and credits with links.
+
+![About](docs/screenshots/about.png)
 
 ### Dark mode
 
