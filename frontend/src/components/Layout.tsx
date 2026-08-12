@@ -2,6 +2,7 @@ import { ReactNode } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { useAuth } from "../auth/AuthContext";
 import { useTheme } from "../theme/ThemeContext";
+import CopilotStudioLogo from "./CopilotStudioLogo";
 
 export default function Layout({ children }: { children: ReactNode }) {
   const { user, logout } = useAuth();
@@ -22,7 +23,7 @@ export default function Layout({ children }: { children: ReactNode }) {
       <header className="bg-surface border-b border-line shadow-card sticky top-0 z-10">
         <div className="max-w-7xl mx-auto px-6 h-16 flex items-center gap-6">
           <div className="flex items-center gap-2">
-            <span className="w-3 h-6 rounded-sm bg-orange inline-block" />
+            <CopilotStudioLogo size={24} />
             <span className="font-semibold text-ink">
               Agent Quality <span className="text-slate font-normal">Platform</span>
             </span>

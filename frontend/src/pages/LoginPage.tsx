@@ -1,5 +1,6 @@
 import { FormEvent, useState } from "react";
 import { useAuth } from "../auth/AuthContext";
+import CopilotStudioLogo from "../components/CopilotStudioLogo";
 
 export default function LoginPage() {
   const { login, loginEntra, entraAvailable } = useAuth();
@@ -24,8 +25,8 @@ export default function LoginPage() {
   return (
     <div className="min-h-full grid place-items-center p-6">
       <div className="card p-8 w-full max-w-sm">
-        <div className="flex items-center gap-2 mb-6">
-          <span className="w-3 h-6 rounded-sm bg-orange inline-block" />
+        <div className="flex items-center gap-3 mb-6">
+          <CopilotStudioLogo size={36} />
           <h1 className="font-semibold text-lg text-ink">Agent Quality Platform</h1>
         </div>
 
